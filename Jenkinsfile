@@ -1,9 +1,8 @@
 pipeline {
-	agent none
+	agent { label 'centos' }
 
 	stages {
 		stage('Build') {
-			agent { label 'centos' }
 
 			steps {
 				sh 'ant -f build.xml -v'
