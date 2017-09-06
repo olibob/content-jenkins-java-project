@@ -1,6 +1,13 @@
 pipeline {
 	agent { label 'centos' }
 
+	options {
+		disableConcurrentBuilds()
+		skipStagesAfterUnstable()
+		timestamps()
+		buildDiscarder(logRotator(numToKeepStr: '5', artifactDaysToKeepStr: '2'))
+	}
+
 	stages {
 		stage('Build') {
 
@@ -12,7 +19,7 @@ pipeline {
 
 	post {
 		always {
-			archive 'dist/*.jar'
+			archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
 		}
 	}
 }
