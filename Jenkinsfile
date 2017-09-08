@@ -50,5 +50,13 @@ pipeline {
         sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
       }
     }
+    stage('Promote to green') {
+    	agent {
+    		label 'centos'
+    	}
+    	steps {
+    		sh "cp /var/www/html/rectangles/all/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
+    	}
+    }
   }
 }
