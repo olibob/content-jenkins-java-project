@@ -89,9 +89,9 @@ pipeline {
     		echo 'Pushing to Origin testmaster'
     		sh 'git push origin testmaster'
     		echo 'Tagging'
-				sh 'git tag ${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}'
+				sh "git tag ${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}"
 				echo 'Pushing tag'
-				sh 'git push origin ${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}'
+				sh "git push origin ${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}"
     	}
     }
   }
