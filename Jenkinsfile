@@ -38,7 +38,7 @@ pipeline {
         label 'master'
       }
       steps {
-        sh "wget http://olibob2.mylabserver.com/rectangles/i${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
+        sh "wget http://olibob2.mylabserver.com/rectangles/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
         sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
       }
     }
