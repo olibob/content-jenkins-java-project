@@ -78,7 +78,7 @@ pipeline {
     		echo 'Checking out testmaster'
     		sh 'git checkout testmaster'
     		echo 'Setting username and email locally'
-    		sh 'git config  user.email "robby57@gmail.com"
+    		sh 'git config  user.email "robby57@gmail.com"'
     		sh 'git config  user.name "Olivier Robert"
     		echo 'Merging dev into testmaster'
     		sh 'git merge --no-ff bob/FunctionalTesting'
