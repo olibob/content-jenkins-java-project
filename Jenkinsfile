@@ -97,24 +97,24 @@ pipeline {
 				echo 'Pushing tag'
 				sh "git push origin ${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}"
     	}
-			post {
-				succes {
-					emailext(
-						subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] Dev promoted to Master!",
-						body: "<p>${env.JOB_NAME} [${env.BUILD_NUMBER}] Dev promoted to Master!</p><p>Check console output at &QUOT<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOTE</p>",
-						to: "orobert"
-					)
-				}
     }
-    }
-    post {
-    	failure {
-    		emailext(
-    			subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] failed!",
-    			body: "<p>${env.JOB_NAME} [${env.BUILD_NUMBER}] failed!</p><p>Check console output at &QUOT<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOTE</p>",
-    			to: "orobert"
-    		)
-    	}
+		post {
+			success {
+				emailext(
+					subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] Dev promoted to Master!",
+					body: "<p>${env.JOB_NAME} [${env.BUILD_NUMBER}] Dev promoted to Master!</p><p>Check console output at &QUOT<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOTE</p>",
+					to: "orobert"
+				)
+			}
+		}
+	}
+  post {
+    failure {
+    	emailext(
+    		subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] failed!",
+    		body: "<p>${env.JOB_NAME} [${env.BUILD_NUMBER}] failed!</p><p>Check console output at &QUOT<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOTE</p>",
+    		to: "orobert"
+    	)
     }
   }
 }
