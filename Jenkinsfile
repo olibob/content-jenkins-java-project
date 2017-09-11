@@ -1,6 +1,10 @@
 pipeline {
   agent none
 
+	environment {
+		MAJOR_VERSION = '1.0.0'
+	}
+
   stages {
     stage('Unit Tests') {
       agent {
@@ -30,7 +34,7 @@ pipeline {
       }
       steps {
         sh "mkdir -p /var/www/html/rectangles/${env.BRANCH_NAME}"
-        sh "cp dist/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/${env.BRANCH_NAME}/"
+        sh "cp dist/rectangle_${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}.jar /var/www/html/rectangles/${env.BRANCH_NAME}/"
       }
     }
     stage("Running on Master") {
@@ -38,8 +42,8 @@ pipeline {
         label 'master'
       }
       steps {
-        sh "wget http://olibob2.mylabserver.com/rectangles/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
-        sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
+        sh "wget http://olibob2.mylabserver.com/rectangles/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}.jar"
+        sh "java -jar rectangle_${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}.jar 3 4"
       }
     }
     stage("Test on Debian") {
@@ -47,8 +51,8 @@ pipeline {
         docker 'openjdk:8u121-jre'
       }
       steps {
-        sh "wget http://olibob2.mylabserver.com/rectangles/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
-        sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
+        sh "wget http://olibob2.mylabserver.com/rectangles/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}.jar"
+        sh "java -jar rectangle_${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}.jar 3 4"
       }
     }
     stage('Promote to green') {
@@ -60,7 +64,7 @@ pipeline {
 
     	}
     	steps {
-    		sh "cp /var/www/html/rectangles/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
+    		sh "cp /var/www/html/rectangles/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
     	}
     }
     stage('Promote code to testmaster') {
@@ -75,8 +79,12 @@ pipeline {
     		sh 'git stash'
     		echo 'Checking out the dev branch'
     		sh 'git checkout bob/FunctionalTesting'
+    		echo 'Update branch bob/FunctionalTesting'
+    		sh 'git pull'
     		echo 'Checking out testmaster'
     		sh 'git checkout testmaster'
+    		echo 'Update branch testmaster'
+    		sh 'git pull'
     		echo 'Setting username and email locally'
     		sh 'git config  user.email "robby57@gmail.com"'
     		sh 'git config  user.name "Olivier Robert"'
@@ -84,6 +92,10 @@ pipeline {
     		sh 'git merge --no-ff bob/FunctionalTesting'
     		echo 'Pushing to Origin testmaster'
     		sh 'git push origin testmaster'
+    		echo 'Tagging'
+				sh "git tag ${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}"
+				echo 'Pushing tag'
+				sh "git push origin ${env.MAJOR_VERSION}-build${env.BUILD_NUMBER}"
     	}
     }
   }
