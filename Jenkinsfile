@@ -65,7 +65,7 @@ pipeline {
     }
     stage('Promote code to testmaster') {
     	agent {
-    		label 'centos'
+    		label 'master'
     	}
     	when {
     		branch 'bob/FunctionalTesting'
