@@ -55,7 +55,7 @@ pipeline {
     		label 'centos'
     	}
     	when {
-    		branch 'bob/FunctionalTesting'
+    		branch 'bob/FunctionalTestinig'
     	}
     	steps {
     		sh "cp /var/www/html/rectangles/all/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
