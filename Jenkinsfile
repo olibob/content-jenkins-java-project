@@ -12,6 +12,19 @@ pipeline {
   			sayHello 'Bob'
   		}
   	}
+  	stage('gitStuff') {
+  		agent any
+
+  		steps {
+  			echo "Branch name: ${env.BRANCH_NAME}"
+
+  			script {
+  				def myLib = new myorg.git.gitStuff();
+
+  				echo "My commit: ${myLib.gitCommit("${env.WORKSPACE}/.git")}"
+  			}
+  		}
+  	}
     stage('Unit Tests') {
       agent {
         label 'centos'
