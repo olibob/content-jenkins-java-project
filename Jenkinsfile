@@ -12,12 +12,10 @@ pipeline {
   			sayHello 'Bob'
   		}
   	}
-  	stage('gitStuff') {
+  	stage('show sha1') {
   		agent any
-
   		steps {
   			echo "Branch name: ${env.BRANCH_NAME}"
-
   			script {
   				def myLib = new myorg.git.gitStuff();
 
