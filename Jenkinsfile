@@ -19,7 +19,7 @@ pipeline {
   			script {
   				def myLib = new myorg.git.gitStuff();
 
-  				echo "My commit: ${myLib.gitCommit(\"${env.WORKSPACE}/.git\")}"
+  				echo "My commit: ${myLib.gitCommit(${env.WORKSPACE}/.git)}"
   			}
   		}
   	}
