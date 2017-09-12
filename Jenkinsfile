@@ -3,6 +3,7 @@ pipeline {
 
 	environment {
 		MAJOR_VERSION = '1.0.0'
+		pathOfGit = "${env.WORKSPACE}/.git"
 	}
 
   stages {
@@ -19,7 +20,7 @@ pipeline {
   			script {
   				def myLib = new myorg.git.gitStuff();
 
-  				echo "My commit: ${myLib.gitCommit(${env.WORKSPACE}/.git)}"
+  				echo "My commit: ${myLib.gitCommit(${pathOfGit})}"
   			}
   		}
   	}
